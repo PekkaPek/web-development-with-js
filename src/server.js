@@ -19,7 +19,7 @@ app.use(require('webpack-hot-middleware')(compiler));
 app.get('/api/tussi', function(req, res, next) {
 
     res.send([
-        'tussi',
+        'tussi1',
         'tussi2',
         'tussi3',
         'tussi4',
@@ -41,4 +41,8 @@ app.listen(port, 'localhost', function(err) {
   console.log('Listening at http://localhost:' + port);
 });
 
+function sayHello() {
+    console.log('World');
+}
 
+sayHello();
