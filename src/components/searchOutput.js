@@ -4,7 +4,7 @@ const SearchOutput = React.createClass({
     render: function() {
         return(
             <div id="output">
-                {searchString}
+                {this.props.SearchOutput}
             </div>
         );
     }

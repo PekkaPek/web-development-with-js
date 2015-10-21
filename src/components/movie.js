@@ -16,13 +16,15 @@ const Movie = React.createClass({
         });
     },
 
+
+
     render: function() {
         return (
             <div className="movie">
                 <h2>Movie site</h2>
                 <img src="/home/user/web-development-with-js/src/assets/img" alt="Planes poster image"/>
                 <SearchBar/>
-                <button id="searchButton">Search</button>
+                <button id="searchButton" onClick={this.stringChanger}>Search</button>
                 <SearchOutput searchString={this.state.searchString}/>
             </div>
         );
