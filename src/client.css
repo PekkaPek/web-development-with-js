@@ -12,11 +12,13 @@ h1 {
 
 .megaTussi {
     position: fixed;
-    bottom: 0;
+    bottom: 8px;
 
     font-size: 100px;
     background: cyan;
     color: #80CEE8;
+
+    min-width: 100px;
+    height: 100px;
+    text-align: center;
 }
-
-
