@@ -10,6 +10,8 @@ require('./client.css');
 import React from 'react';
 import ReactDOM from 'react-dom';
 import axios from 'axios';
+//
+import { Router, Route, Link } from 'react-router'
 
 function getTussit() {
     return axios.get('/api/tussi').then((response) => {
@@ -23,9 +25,12 @@ const HelloWorld = React.createClass({
     // nimi täytyy olla render
     render: function() {
         // returnissa vain yksi div
+        // linkkitys on tässä "huonommalla" tavalla
         return (
-            <div>Hello {this.props.name}
-            </div>
+            <Link to={`/hello/${this.props.name}`}>
+                <div>Hello {this.props.name}
+                </div>
+            </Link>
             );
     }
 });
@@ -36,6 +41,8 @@ const HelloWorldApp = React.createClass({
 
     // react kutsuu tätä
     // saa alkutilanteen
+
+    /*
     getInitialState: function() {
         return {
             count: 0,
@@ -43,7 +50,9 @@ const HelloWorldApp = React.createClass({
             names: []
         };
     },
+    */
 
+    /*
     componentDidMount: function() {
         getTussit().then((data) => {
             this.setState({
@@ -51,6 +60,7 @@ const HelloWorldApp = React.createClass({
             });
         });
     },
+    */
 
     render: function() {
         // array literaali
@@ -61,12 +71,8 @@ const HelloWorldApp = React.createClass({
                 <h1>Lusso</h1>
                 {names.map(name => <HelloWorld name={name}/> )}
 
-                <Counterizer
-                    count={this.state.count}
-                    onIncrementCounter={this.incrementCounter}/>
-                <MegaCounterizer
-                    count={this.state.count}
-                    onIncrementCounter={this.incrementCounter}/>
+
+                {this.props.children}
             </div>
         );
     },
@@ -77,6 +83,36 @@ const HelloWorldApp = React.createClass({
             count: this.state.count + 1
         });
     },
+});
+
+const MainContent = React.createClass({
+
+    getInitialState: function() {
+        return{
+            count: 0,
+            names: []
+        };
+    }
+
+    componentDidMount: function() {
+        getTussit().then((data) => {
+            this.setState({
+                names: data
+            });
+        });
+    }
+
+    render function() {
+        const names = this.state.names;
+        return(
+            <Counterizer
+                count={this.state.count}
+                onIncrementCounter={this.incrementCounter}/>
+            <MegaCounterizer
+                count={this.state.count}
+                onIncrementCounter={this.incrementCounter}/>
+        );
+    }
 });
 
 // Huom ClassName
@@ -109,6 +145,22 @@ const MegaCounterizer = React.createClass({
     },
 });
 
+const Greeter = React.createClass({
+    render: function() {
+        // Katsotaan, mitä kaikkea on saatavilla
+        console.log(this.props);
+        // Käytetään console propsia
+        const name = this.props.params.name;
+
+        return (
+
+            <h2>
+                Helloo {name}
+            </h2>
+        );
+    }
+});
+
 const losot = ['Panu', 'Panu2', 'Panu32'];
 // taulukko tulee takaisin (muutettuna)
 const laihdutetut = losot.map(loso => 'laihempi' + loso);
@@ -134,10 +186,19 @@ const keskiarvo = luvut.reduce(
 
 console.log(PanunPerhe);
 
+// Sisältää ankkurihistorian
+const routes = (
+    <Router>
+        <Route path="/" component={HelloWorldApp}>
+            <Route path="/" component={MainContent}></Route>
+            <Route path="/hello/:name" component={Greeter}></Route>
+        </Route>
+    </Router>
+);
 
 // Aaltosulkeet JSX-notaatiota
 // Ei siis object literal
 ReactDOM.render(
-    <HelloWorldApp/>,
+    routes,
     document.getElementById('app')
 );
