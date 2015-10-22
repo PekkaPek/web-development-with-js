@@ -2,21 +2,33 @@ import React from 'react';
 import SearchOutput from './searchOutput';
 
 const Movie = React.createClass({
+    propTypes: {
+        searchStrings: React.PropTypes.array.isrequired
+    },
 
     getInitialState: function() {
         return {
-            searchString: 'Tahan tulee hakuteksti'
+            searchStrings: ['testileffas']
         };
     },
 
     setString: function() {
         console.log(this.state);
-        // Otetaan input elementistä uusi arvo
-        const newSearchString = this.refs.searchElementRef.value.trim();
+        // Otetaan input elementistä uusin hakustringi talteen hakukentästä
+        let newSearchString = this.refs.searchElementRef.value.trim();
+        // Otetaan taulukko vanhoista hauista
+        let newArray = this.state.searchStrings.slice();
+        // Lisätään uusi hakustingi
+        newArray.push(newSearchString);
+        newArray.reverse();
+
+        // Päivitetään vanhojen hakujen tila
         this.setState({
-            searchString: newSearchString
+            searchStrings: newArray
         });
-        console.log(this.state);
+
+        // Otetaan vanha haku pois inputista
+        this.refs.searchElementRef.value = '';
     },
 
     render: function() {
@@ -31,7 +43,7 @@ const Movie = React.createClass({
                 </div>
                 <div className="latestSearches">
                     <h2>Latest searches</h2>
-                    <SearchOutput searchString={this.state.searchString}/>
+                    <SearchOutput searchStrings={this.state.searchStrings}/>
                 </div>
             </div>
         );
