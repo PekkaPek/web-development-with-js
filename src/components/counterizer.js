@@ -4,6 +4,7 @@ const Counterizer = React.createClass({
     render: function() {
 
         const { count, name, onIncrementCounter } = this.props;
+        console.log(this.props);
         // Ei saa olla sulkeita incrementCounterissa
         // onCLick syö callbackin/funktion
         return (
